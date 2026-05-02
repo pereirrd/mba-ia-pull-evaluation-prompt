@@ -140,6 +140,17 @@ Agora que você tem o prompt inicial, é hora de refatorá-lo usando as técnica
 - Deve incluir **tratamento de edge cases**
 - Deve usar **System vs User Prompt** adequadamente
 
+## Técnicas Aplicadas (Fase 2)
+
+O prompt `prompts/bug_to_user_story_v2.yml` foi refatorado para transformar relatos de bugs em User Stories mais claras, testáveis e próximas do formato esperado pelo dataset de avaliação.
+
+- **Few-shot Learning**: foram adicionados três exemplos completos de entrada e saída cobrindo bugs de e-commerce, validação de formulário e comportamento mobile. Essa técnica foi escolhida porque reduz ambiguidade de formato e orienta o modelo a reproduzir a estrutura esperada de User Story e Critérios de Aceitação.
+- **Role Prompting**: o system prompt define a persona de um Product Manager sênior especializado em triagem de bugs e escrita de User Stories. Essa técnica ajuda o modelo a priorizar valor para o usuário, clareza de produto e critérios úteis para desenvolvimento e QA.
+- **Chain of Thought**: o prompt instrui o modelo a pensar passo a passo para identificar persona, contexto, comportamento incorreto, necessidade e critérios verificáveis. O raciocínio não deve aparecer na resposta final, mantendo a saída objetiva.
+- **Skeleton of Thought**: a resposta foi estruturada em etapas fixas: `User Story` e `Critérios de Aceitação`. Essa organização aumenta consistência, facilita avaliação automática e evita respostas longas ou fora do padrão.
+
+Também foram adicionadas regras explícitas para edge cases: relatos vazios ou genéricos devem retornar uma mensagem padronizada de insuficiência; relatos incompletos devem gerar a melhor User Story possível sem inventar dados; relatos com múltiplos bugs devem focar no problema principal.
+
 ---
 
 ### 3. Push e Avaliação
