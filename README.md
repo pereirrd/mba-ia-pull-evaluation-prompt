@@ -194,6 +194,22 @@ Métricas finais após a última avaliação:
 
 Status final: **APROVADO - todas as métricas >= 0.9**.
 
+### Screenshots das Avaliações
+
+As evidências visuais da execução e avaliação no LangSmith estão salvas no diretório `docs/`.
+
+**Métricas finais com notas >= 0.9:**
+
+![Métricas finais no LangSmith](docs/screenshot_metrics.png)
+
+**Exemplos do dataset e execuções avaliadas:**
+
+![Exemplos avaliados no LangSmith](docs/screenshot_examples.png)
+
+**Prompt otimizado publicado no LangSmith Hub:**
+
+![Prompt otimizado no LangSmith](docs/screenshot_prompting.png)
+
 ---
 
 ### 3. Push e Avaliação
