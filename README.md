@@ -210,6 +210,14 @@ As evidências visuais da execução e avaliação no LangSmith estão salvas no
 
 ![Prompt otimizado no LangSmith](docs/screenshot_prompting.png)
 
+**Tracing detalhado de 3 exemplos avaliados:**
+
+![Tracing detalhado do exemplo 1](docs/screenshot_tracing_1.png)
+
+![Tracing detalhado do exemplo 2](docs/screenshot_tracing_2.png)
+
+![Tracing detalhado do exemplo 3](docs/screenshot_tracing_3.png)
+
 ---
 
 ### 3. Push e Avaliação
