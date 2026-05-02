@@ -303,9 +303,16 @@ mba-ia-pull-evaluation-prompt/
 - [LangSmith Documentation](https://docs.smith.langchain.com/)
 - [Prompt Engineering Guide](https://www.promptingguide.ai/)
 
-## VirtualEnv para Python
+## Como Executar
 
-Crie e ative um ambiente virtual antes de instalar dependências:
+### Pré-requisitos
+
+- Python 3.9 ou superior
+- Conta e API Key do LangSmith
+- API Key do provider de LLM escolhido, como OpenAI ou Gemini
+- Dependências listadas em `requirements.txt`
+
+### 1. Criar ambiente virtual e instalar dependências
 
 ```bash
 python3 -m venv venv
@@ -313,31 +320,58 @@ source venv/bin/activate  # No Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
----
+### 2. Configurar variáveis de ambiente
 
-## Ordem de execução
-
-### 1. Executar pull dos prompts ruins
+Crie o arquivo `.env` a partir de `.env.example` e preencha as credenciais necessárias:
 
 ```bash
-python src/pull_prompts.py
+cp .env.example .env
 ```
 
-### 2. Refatorar prompts
+Variáveis principais:
 
-Edite manualmente o arquivo `prompts/bug_to_user_story_v2.yml` aplicando as técnicas aprendidas no curso.
+- `LANGSMITH_ENDPOINT`
+- `LANGSMITH_API_KEY`
+- `LANGSMITH_PROJECT`
+- `USERNAME_LANGSMITH_HUB`
+- `LLM_PROVIDER`
+- `LLM_MODEL`
+- `EVAL_MODEL`
+- `OPENAI_API_KEY` ou `GOOGLE_API_KEY`, conforme o provider escolhido
 
-### 3. Fazer push dos prompts otimizados
+### 3. Executar pull do prompt inicial
 
 ```bash
-python src/push_prompts.py
+python3 src/pull_prompts.py
 ```
 
-### 4. Executar avaliação
+Esse comando baixa o prompt original `leonanluppi/bug_to_user_story_v1` e salva o conteúdo em `prompts/bug_to_user_story_v1.yml`.
+
+### 4. Refatorar e validar o prompt otimizado
+
+O prompt otimizado fica em `prompts/bug_to_user_story_v2.yml`. Ele deve conter as técnicas de Prompt Engineering, exemplos Few-shot e regras de comportamento.
+
+Execute os testes de validação:
 
 ```bash
-python src/evaluate.py
+pytest tests/test_prompts.py
 ```
+
+### 5. Publicar o prompt otimizado no LangSmith
+
+```bash
+python3 src/push_prompts.py
+```
+
+Esse comando publica o prompt versionado no LangSmith Hub usando o formato `{USERNAME_LANGSMITH_HUB}/bug_to_user_story_v2`, com metadados, tags e visibilidade pública.
+
+### 6. Executar avaliação final
+
+```bash
+python3 src/evaluate.py
+```
+
+Esse comando cria ou reutiliza o dataset de avaliação, executa o prompt `v2` contra os 15 exemplos e calcula as métricas `Helpfulness`, `Correctness`, `F1-Score`, `Clarity` e `Precision`.
 
 ---
 
