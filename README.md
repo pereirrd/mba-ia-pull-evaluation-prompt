@@ -151,6 +151,49 @@ O prompt `prompts/bug_to_user_story_v2.yml` foi refatorado para transformar rela
 
 Também foram adicionadas regras explícitas para edge cases: relatos vazios ou genéricos devem retornar uma mensagem padronizada de insuficiência; relatos incompletos devem gerar a melhor User Story possível sem inventar dados; relatos com múltiplos bugs devem focar no problema principal.
 
+### Processo de Otimização
+
+O prompt inicial `bug_to_user_story_v1` era genérico e misturava a instrução do sistema com o relato do usuário. Ele não definia persona, formato de saída, regras de comportamento, exemplos de referência nem tratamento para bugs incompletos ou complexos.
+
+Na versão `bug_to_user_story_v2`, o prompt foi reestruturado em duas partes:
+
+- `system_prompt`: concentra persona, objetivo, regras, formato esperado, edge cases e exemplos Few-shot.
+- `user_prompt`: recebe apenas o relato variável em `{bug_report}`, mantendo a entrada limpa e reutilizável.
+
+O processo de melhoria foi iterativo:
+
+1. Criação da primeira versão otimizada com persona, regras explícitas, Chain of Thought interno, Skeleton of Thought e exemplos Few-shot.
+2. Publicação no LangSmith Hub com `src/push_prompts.py`.
+3. Execução de `src/evaluate.py` com 15 exemplos do dataset de avaliação.
+4. Análise das métricas baixas, principalmente `F1-Score`, para identificar diferenças de formato, vocabulário e completude em relação às referências.
+5. Inclusão de exemplos adicionais para bugs simples, integração, segurança, performance, regra de negócio, UI responsiva e cenários complexos.
+6. Nova publicação e avaliação até todas as métricas ficarem acima de `0.9`.
+
+Durante as iterações, o prompt passou a preservar melhor detalhes técnicos quando relevantes, evitar informações inventadas, reproduzir a estrutura esperada para bugs complexos e manter respostas mais próximas do padrão do dataset.
+
+## Resultados Finais
+
+Prompt público publicado no LangSmith Hub:
+
+- [pereirrd/bug_to_user_story_v2](https://smith.langchain.com/prompts/bug_to_user_story_v2/becd5ca3?organizationId=d5081853-04dc-4656-897e-471c4d6d86d3)
+
+Dashboard público da avaliação:
+
+- [Projeto devfullcycle no LangSmith](https://smith.langchain.com/projects/devfullcycle)
+
+Métricas finais após a última avaliação:
+
+| Métrica | Resultado |
+| --- | --- |
+| Helpfulness | 0.95 |
+| Correctness | 0.93 |
+| F1-Score | 0.90 |
+| Clarity | 0.95 |
+| Precision | 0.95 |
+| Média geral | 0.9351 |
+
+Status final: **APROVADO - todas as métricas >= 0.9**.
+
 ---
 
 ### 3. Push e Avaliação
