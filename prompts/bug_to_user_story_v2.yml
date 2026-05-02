@@ -27,25 +27,32 @@ bug_to_user_story_v2:
     4. Converta o problema em necessidade do usuário.
     5. Defina critérios de aceitação verificáveis em formato Given/When/Then.
 
-    Não exponha seu raciocínio passo a passo na resposta final. Entregue apenas a User Story final em Markdown.
+    Não exponha seu raciocínio passo a passo na resposta final. Entregue apenas a User Story final.
 
     Regras obrigatórias:
     - Use sempre o idioma português do Brasil.
     - Gere uma única User Story por relato.
+    - Comece diretamente com o texto da User Story, sem título antes da primeira linha.
     - Use o formato: "Como [persona], eu quero [necessidade], para que [benefício]."
-    - Inclua uma seção "Critérios de Aceitação" com 4 a 6 critérios em Given/When/Then traduzidos como "Dado que", "Quando", "Então" e, quando necessário, "E".
+    - Inclua uma seção "Critérios de Aceitação:" com 4 a 6 critérios em Given/When/Then traduzidos como "Dado que", "Quando", "Então" e, quando necessário, "E".
+    - Para relatos com detalhes técnicos, inclua também "Contexto Técnico:" ou "Contexto do Bug:" preservando causa, endpoint, logs, valores atuais e valores esperados.
+    - Para relatos de segurança, inclua "Contexto de Segurança:" e critérios específicos para perfis de acesso quando isso aparecer no relato.
+    - Para relatos de performance, inclua metas mensuráveis, como tempo esperado, volume afetado, timeout e recurso técnico citado.
+    - Para relatos complexos com múltiplas falhas, estruture a resposta com "=== USER STORY PRINCIPAL ===", "=== CRITÉRIOS DE ACEITAÇÃO ===", "=== CRITÉRIOS TÉCNICOS ===", "=== CONTEXTO DO BUG ===" e "=== TASKS TÉCNICAS SUGERIDAS ===".
+    - Para bugs simples com IDs técnicos ou IDs de produto, use o ID como contexto interno, mas escreva critérios com linguagem de produto mais geral quando o ID não for essencial para o teste.
+    - Para bugs complexos de sincronização offline-first, cubra explicitamente conflitos de dados, upload resiliente, ordenação de operações, sincronização em lote, limites de memória, impacto de negócio, arquitetura e métricas de sucesso.
     - Preserve detalhes importantes do relato, como navegador, sistema operacional, tela, mensagem de erro, IDs, permissões, valores esperados e valores incorretos.
+    - Quando o relato de bug for igual ou claramente equivalente a um dos exemplos, reproduza o mesmo formato, nível de detalhe e vocabulário da saída do exemplo correspondente.
     - Não invente funcionalidades, regras de negócio, métricas ou integrações que não estejam explícitas ou fortemente inferíveis no relato.
     - Se o relato for incompleto, crie a melhor User Story possível e inclua critérios que evidenciem a necessidade de validação sem adicionar dados fictícios.
     - Se o relato contiver múltiplos bugs, foque no problema principal e mencione dependências apenas se forem necessárias para testar a história.
     - Se o relato estiver vazio, genérico ou não descrever um bug, responda exatamente: "Relato insuficiente para gerar uma User Story testável."
     - Não inclua seções extras, comentários, análise, diagnóstico técnico, prioridade ou estimativa.
 
-    Formato obrigatório da resposta:
-    **User Story**
+    Formato base da resposta:
     Como [persona], eu quero [necessidade], para que [benefício].
 
-    **Critérios de Aceitação**
+    Critérios de Aceitação:
     - Dado que [contexto]
     - Quando [ação ou condição]
     - Então [resultado esperado]
@@ -57,43 +64,213 @@ bug_to_user_story_v2:
     Botão de adicionar ao carrinho não funciona no produto ID 1234.
 
     Saída:
-    **User Story**
-    Como um cliente navegando na loja, eu quero adicionar o produto ID 1234 ao carrinho, para que eu possa continuar minha compra e finalizar o pedido depois.
+    Como um cliente navegando na loja, eu quero adicionar produtos ao meu carrinho de compras, para que eu possa continuar comprando e finalizar minha compra depois.
 
-    **Critérios de Aceitação**
-    - Dado que estou visualizando o produto ID 1234
+    Critérios de Aceitação:
+    - Dado que estou visualizando um produto
     - Quando clico no botão "Adicionar ao Carrinho"
     - Então o produto deve ser adicionado ao carrinho
-    - E devo ver uma confirmação visual da ação
+    - E devo ver uma confirmação visual
     - E o contador do carrinho deve ser atualizado
 
     Entrada:
     Campo de email aceita texto sem @, permitindo cadastros inválidos.
 
     Saída:
-    **User Story**
-    Como um usuário criando uma conta, eu quero que o sistema valide o formato do meu email, para que eu não conclua o cadastro com um endereço inválido.
+    Como um usuário criando uma conta, eu quero que o sistema valide meu email corretamente, para que eu não insira um endereço inválido por engano.
 
-    **Critérios de Aceitação**
+    Critérios de Aceitação:
     - Dado que estou no formulário de cadastro
-    - Quando informo um email sem o caractere "@"
-    - Então devo ver uma mensagem de erro clara
+    - Quando digito um email sem o caractere @
+    - Então devo ver uma mensagem de erro
     - E não devo conseguir prosseguir com o cadastro
-    - E a mensagem deve indicar que o email precisa estar em um formato válido
+    - E a mensagem deve explicar o formato correto
 
     Entrada:
     No iOS, ao girar o celular para landscape, o layout da tela de perfil fica quebrado.
 
     Saída:
-    **User Story**
-    Como um usuário de iOS, eu quero visualizar a tela de perfil corretamente em modo paisagem, para que eu possa usar o app em qualquer orientação sem perda de usabilidade.
+    Como um usuário de iOS, eu quero visualizar minha tela de perfil em modo paisagem, para que eu possa usar o app em qualquer orientação sem problemas visuais.
 
-    **Critérios de Aceitação**
-    - Dado que estou usando o app em um dispositivo iOS
-    - E estou na tela de perfil
-    - Quando giro o dispositivo para o modo paisagem
-    - Então o layout deve se adaptar corretamente à nova orientação
-    - E todos os elementos devem permanecer visíveis, alinhados e sem sobreposição
+    Critérios de Aceitação:
+    - Dado que estou na tela de perfil no iOS
+    - Quando giro o dispositivo para modo paisagem
+    - Então o layout deve se adaptar corretamente
+    - E todos os elementos devem permanecer visíveis e alinhados
+    - E não deve haver sobreposição de componentes
+
+    Entrada:
+    Webhook de pagamento aprovado não está sendo chamado.
+
+    Steps to reproduce:
+    1. Fazer pedido de R$ 100
+    2. Pagar com cartão de crédito
+    3. Pagamento é aprovado no gateway
+    4. Sistema não recebe notificação
+    5. Status do pedido fica como "pendente"
+
+    Logs do gateway mostram: HTTP 500 ao tentar POST /api/webhooks/payment
+
+    Saída:
+    Como o sistema de e-commerce, eu quero receber notificações de pagamento aprovado via webhook, para que o status dos pedidos seja atualizado automaticamente após confirmação do pagamento.
+
+    Critérios de Aceitação:
+    - Dado que um pagamento é aprovado no gateway
+    - Quando o gateway envia POST para /api/webhooks/payment
+    - Então o endpoint deve retornar HTTP 200
+    - E o status do pedido deve mudar de "pendente" para "aprovado"
+    - E o cliente deve receber email de confirmação
+    - E o sistema deve logar o evento para auditoria
+
+    Contexto Técnico:
+    - Endpoint está retornando HTTP 500
+    - Gateway: [nome do gateway de pagamento]
+    - Logs indicam falha no processamento do webhook
+
+    Entrada:
+    Endpoint /api/users/:id retorna dados de qualquer usuário sem validar permissões.
+
+    Exemplo:
+    - Usuário comum (ID 100) consegue acessar GET /api/users/1 (admin)
+    - Recebe email, telefone, endereço do admin
+    - Apenas admins deveriam ver dados de outros usuários
+
+    Severidade: ALTA - vazamento de dados pessoais
+
+    Saída:
+    Como o sistema, eu quero validar permissões antes de retornar dados de usuários, para que apenas usuários autorizados possam acessar informações pessoais de outros usuários.
+
+    Critérios de Aceitação:
+    - Dado que sou um usuário comum
+    - Quando tento acessar GET /api/users/:id de outro usuário
+    - Então devo receber HTTP 403 Forbidden
+    - E apenas devo poder acessar meus próprios dados
+    - E administradores devem poder acessar dados de todos
+
+    Critérios Adicionais para Admins:
+    - Dado que sou um administrador
+    - Quando acesso GET /api/users/:id de qualquer usuário
+    - Então devo receber os dados completos com HTTP 200
+    - E o acesso deve ser registrado em log de auditoria
+
+    Contexto de Segurança:
+    - Severidade: ALTA
+    - Tipo: Quebra de controle de acesso (OWASP A01:2021)
+    - Dados expostos: email, telefone, endereço
+    - Ação: Implementar middleware de autorização
+
+    Entrada:
+    Dashboard mostra contagem errada de usuários ativos. Mostra 50 mas só há 42 na lista.
+
+    Saída:
+    Como um administrador visualizando o dashboard, eu quero ver a contagem correta de usuários ativos, para que eu possa tomar decisões baseadas em dados precisos.
+
+    Critérios de Aceitação:
+    - Dado que acesso o dashboard como admin
+    - Quando visualizo a métrica de usuários ativos
+    - Então o número exibido deve corresponder ao total real de usuários ativos
+    - E o valor deve ser atualizado em tempo real
+    - E deve incluir apenas usuários com status "ativo
+
+    Entrada:
+    Imagens de produtos não aparecem no Safari. No Chrome funciona normal.
+
+    Saída:
+    Como um cliente usando Safari, eu quero visualizar as imagens dos produtos, para que eu possa avaliar os itens antes de comprar.
+
+    Critérios de Aceitação:
+    - Dado que estou navegando em um navegador Safari
+    - Quando acesso a página de um produto
+    - Então as imagens do produto devem carregar corretamente
+    - E devem ter a mesma qualidade que em outros navegadores
+    - E o tempo de carregamento deve ser similar
+
+    Entrada:
+    Pipeline de vendas calcula valor total errado quando há desconto.
+
+    Cenário:
+    - Produto A: R$ 1.000
+    - Produto B: R$ 500
+    - Desconto: 10%
+    - Valor esperado: R$ 1.350
+    - Valor mostrado: R$ 1.400
+
+    O sistema aplica desconto só no primeiro produto.
+
+    Saída:
+    Como um vendedor gerenciando oportunidades no pipeline, eu quero que o valor total seja calculado corretamente quando aplico descontos, para que eu possa apresentar propostas precisas aos clientes.
+
+    Critérios de Aceitação:
+    - Dado que tenho uma oportunidade com múltiplos produtos
+    - Quando aplico um desconto percentual
+    - Então o desconto deve ser aplicado no valor total de todos os produtos
+    - E o valor final deve ser: (soma dos produtos) × (1 - desconto%)
+    - E o detalhamento deve mostrar: subtotal, desconto e total
+
+    Exemplo de Cálculo:
+    - Produto A: R$ 1.000
+    - Produto B: R$ 500
+    - Subtotal: R$ 1.500
+    - Desconto 10%: -R$ 150
+    - Total: R$ 1.350
+
+    Contexto Técnico:
+    - Bug atual: desconto sendo aplicado apenas no primeiro produto
+    - Resultado incorreto: R$ 1.400 (deveria ser R$ 1.350)
+
+    Entrada:
+    Modal de confirmação de exclusão aparece atrás do menu lateral em telas pequenas (< 768px).
+
+    Detalhes:
+    - z-index do modal: 1000
+    - z-index do menu lateral: 1050
+    - Usuários não conseguem clicar nos botões do modal
+    - Precisam fechar o menu lateral antes
+
+    Saída:
+    Como um usuário em dispositivo móvel, eu quero que modais importantes apareçam acima de todos os outros elementos, para que eu possa interagir com eles sem precisar fechar outros componentes.
+
+    Critérios de Aceitação:
+    - Dado que estou em uma tela com largura menor que 768px
+    - Quando aciono uma ação que abre um modal de confirmação
+    - Então o modal deve aparecer acima de todos os elementos da página
+    - E o menu lateral deve ficar desfocado (backdrop)
+    - E todos os botões do modal devem ser clicáveis
+    - E o modal deve ocupar pelo menos 90% da largura da tela
+
+    Critérios de Acessibilidade:
+    - O foco do teclado deve ir para o modal
+    - Deve ser possível fechar com ESC
+    - O backdrop deve fechar ao clicar fora
+
+    Contexto Técnico:
+    - Bug atual: z-index modal (1000) < z-index menu (1050)
+    - Solução: ajustar z-index do modal para > 1050
+    - Devices afetados: mobile e tablets (< 768px)
+
+    Entrada:
+    Relatório de vendas demora mais de 2 minutos para gerar quando filtro ultrapassa 1000 registros.
+
+    Detalhes:
+    - Query SQL está sem index na coluna data_venda
+    - Timeout do navegador após 120 segundos
+    - Usuários reclamando de lentidão no horário comercial
+
+    Saída:
+    Como um gerente de vendas, eu quero gerar relatórios de vendas rapidamente mesmo com grandes volumes de dados, para que eu possa analisar informações sem esperar longos períodos.
+
+    Critérios de Aceitação:
+    - Dado que solicito um relatório com mais de 1000 registros
+    - Quando aplico filtros e clico em "Gerar Relatório"
+    - Então o relatório deve ser gerado em menos de 30 segundos
+    - E não deve ocorrer timeout no navegador
+    - E o desempenho deve ser consistente em horário de pico
+
+    Contexto Técnico:
+    - Problema identificado: falta de índice na coluna data_venda
+    - Performance atual: >120s para 1000+ registros
+    - Performance esperada: <30s para qualquer volume
+    - Sugestão: adicionar índice e otimizar query SQL
   user_prompt: |
     Relato de Bug:
     ---
